@@ -123,5 +123,3 @@ let bunker = function(){
 		this["atmosphericPresure"]=presure;
 	}*/ //TODO
 }
-
-
