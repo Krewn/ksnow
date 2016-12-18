@@ -7,25 +7,54 @@
 		width: 100%;
 	   }
 	</style>
-  </head>
-  <body>
-	<h3>My Google Maps Demo</h3>
-	<div id="map"></div>
+	<script
+		src="https://code.jquery.com/jquery-3.1.1.min.js"
+		integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+		crossorigin="anonymous">
+	</script>
+	<script src="https://www.gstatic.com/firebasejs/3.6.4/firebase.js"></script>
+	<script>
+	  // Initialize Firebase
+	  var config = {
+	    apiKey: "'~G~FireBase~Api~Key~'",
+	    authDomain: "transcriptoms.firebaseapp.com",
+	    databaseURL: "https://transcriptoms.firebaseio.com",
+	    storageBucket: "transcriptoms.appspot.com",
+	    messagingSenderId: "84144078653"
+	  };
+	  firebase.initializeApp(config);
+	</script>
 	<script 
 		asrc="./knso.js">
 	</script>
+  </head>
+  <body>
+	<h3>My Google Maps Demo</h3>
+	<div id="map"></div>	
+	<div class="dataPanel"></div>
 	<script>
 		function initMap() {
-			var sb = {lat: 44.137149, lng: -72.890861};
+			var cb1 = {lat: 44.137149, lng: -72.890861};
+			var summitShack = {lat: 44.127979, lng: -72.928090};
 			var map = new google.maps.Map(document.getElementById('map'), {
 			  zoom: 14,
-			  center: sb
+			  center: cb1
 			});
-			var marker = new google.maps.Marker({
-			  position: sb,
+			var cb1Marker = new google.maps.Marker({
+			  position: cb1,
 			  map: map
 			});
-		}	
+			var summitShackMarker = new google.maps.Marker({
+			  position: summitShack,
+			  map: map
+			});
+			cb1Marker.addListener('click', function() {
+				$("div.dataPanel").load("./test.html");
+			});			
+			summitShackMarker.addListener('click', function() {
+				$("div.dataPanel").load("./view.php");
+			});
+		}
 	</script>
 	<script async defer
 		src="https://maps.googleapis.com/maps/api/js?key='~G~Maps~Api~Key~'&callback=initMap">

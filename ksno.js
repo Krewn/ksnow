@@ -53,15 +53,14 @@ function mountian(){
 	this.hydrantWaterPresure=function(index){
 		return(klogic(this.hydrants[index],this.bunkers,this.hydrants[index]["locationalkeys"],"waterPresure"))
 	}
-	return(this);
 }
 function hydrant() {
-	this = new Object();
+	this.label = "unlabled"
 	this.atmospherickeys = ["temp","humidity","atmosphericPresure"];
 	this.locationalkeys = ["longitude","latitude","altitude"];
 	this.attrKeys =["longitude","latitude","altitude","temp","humidity","atmosphericPresure"];	
 	this.valveKeys = ["airPresure","waterPresure"];
-	this.setableKeys = ["type","bank"]	
+	this.setableKeys = ["type","bank"];
 	this.temp = null;
 	this.atmosphericPresure = null;
 	this.humidity = null;
@@ -74,13 +73,17 @@ function hydrant() {
 	this.type = null;
 	this.airCharged = null;
 	this.watterCharged = null;
-	return(this);              // The function thisurns the product of p1 and p2
+}
+hydrant.prototype.fireBaseLog(attrName,attrValue){
+	tSamp = new Date().getTime() / 1000;
+	var fireRef = new Firebase('https://transcriptoms.firebaseio.com/transcriptomes');
+	var newUserRef = fireRef.push();
+	newUserRef.set({ attrName: attrValue, "ref":this.label, "time" = tStamp});
 }
 let line = function(){
-	this = new Object();
 	this.hydrants = [];
 	this.addHydrant = function(h){
-		this.hydrants.push(h)
+		this.hydrants.push(h);
 	}
 	this.charge = function(){
 		for(let k=0;k<this.hydrants;k++){
@@ -94,10 +97,9 @@ let line = function(){
 			this.hydrants[k].waterCharged = false;		
 		}
 	}
-	return(this)
 }
 function weatherStation(){
-	this = hydrant();
+	hydrant.call(this);
 	this.setTemp = function(temp){
 		this["temp"]=temp;
 	}
@@ -108,8 +110,9 @@ function weatherStation(){
 		this["wind"]=presure;
 	}
 }
+weatherStation.prototype = Object.create(hydrant.prototype);
 let bunker = function(){
-	this = hydrant();
+	hydrant.call(this);
 	this.setAirPresure = function(presure){
 		this["airPresure"]=presure;
 	}
@@ -123,3 +126,8 @@ let bunker = function(){
 		this["atmosphericPresure"]=presure;
 	}*/ //TODO
 }
+bunker.prototype = Object.create(hydrant.prototype);
+
+
+
+
